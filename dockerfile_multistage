@@ -1,0 +1,15 @@
+#BUILD stage
+FROM maven AS build
+WORKDIR /usr/app
+COPY pom.xml /usr/app
+RUN mvn dependency:go-offline -B
+COPY src /usr/app/src
+RUN mvn package -DskipTests
+
+#RUN STAGE
+FROM openjdk:alpine
+COPY --from=build /usr/app/target/metadata-service.jar metadata-service.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","-Xms256m","-Xmx512m","/metadata-service.jar"]
+
+

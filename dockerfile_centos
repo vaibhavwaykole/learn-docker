@@ -1,0 +1,9 @@
+FROM centos
+WORKDIR /tmp
+COPY index.html .
+RUN yum update -y && yum install wget -y
+CMD ["echo","hello world"]
+ENTRYPOINT ["echo", "entry point - hello world"]
+ 
+
+
